@@ -1,8 +1,29 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { toggleMenu } from "../utils/appSlice";
-
+import { YOUTUBE_SEARCH_API } from "../utils/constants";
+// interface PropHead {
+//   searchQuery: string;
+//   setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
+// }
 const Head = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const getSearchSuggestions = async () => {
+    //console.log("searchQuery:----- ", searchQuery);
+    const apiCallForSearch = await fetch(YOUTUBE_SEARCH_API + searchQuery);
+    const apiCallForSearchToJSON = await apiCallForSearch.json();
+    console.log("apiCallForSearchToJSON: ", apiCallForSearchToJSON);
+    setSuggestions(apiCallForSearchToJSON[1]);
+  };
+  useEffect(() => {
+    let timer = setTimeout(() => getSearchSuggestions(), 500);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [searchQuery]);
+
   const dispatch = useDispatch();
   const toggleMenuHandler = () => {
     dispatch(toggleMenu());
@@ -24,14 +45,36 @@ const Head = () => {
           />
         </a>
       </div>
-      <div className="flex justify-center col-span-10">
-        <input className=" w-1/2 border border-black  rounded-l-full p-2" />
-        <button className="border border-black  rounded-r-full p-2">
-          Search
-        </button>
+      <div className="px-10 col-span-10">
+        <div>
+          <input
+            className=" w-1/2 border border-gray-400  rounded-l-full p-1"
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onFocus={() => setShowSuggestions(true)}
+            onBlur={() => setShowSuggestions(false)}
+          />
+          <button className="border border-gray-400  rounded-r-full p-1 px-3 bg-slate-100 ">
+            🔍
+          </button>
+        </div>
+        <div className="absolute  bg-white py-2 px-3 shadow-lg rounded-lg border border-gray-100 w-[45rem]">
+          {showSuggestions && (
+            <ul>
+              {suggestions?.map((s) => (
+                <li
+                  key={s}
+                  className="p-2 m-2 shadow-sm hover:bg-slate-200 border"
+                >
+                  {s}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
       <div className="col-span-1">
-        {" "}
         <img
           className="w-10 h-10"
           src="https://e7.pngegg.com/pngimages/178/595/png-clipart-user-profile-computer-icons-login-user-avatars-monochrome-black-thumbnail.png"

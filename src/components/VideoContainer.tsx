@@ -9,6 +9,7 @@ import Shimmer from "./Shimmer";
 // }
 const VideoContainer = () => {
   const [videos, setVideos] = useState<any>([]);
+  // console.log("videos: ", videos);
   const getVideos = async () => {
     const apiCall = await fetch(YOUTUBE_API);
     const convertDataToJson = await apiCall.json();
@@ -22,11 +23,12 @@ const VideoContainer = () => {
   if (videos.length === 0) {
     return <Shimmer />;
   }
+
   return (
     <div className="flex flex-wrap">
       {videos.map((content: any) => (
-        <Link to={`/watch?v=${content.id}`}>
-          <VideoCard key={content.id} info={content} />
+        <Link to={`/watch?v=${content.id}`} key={content.id}>
+          <VideoCard info={content} />
         </Link>
       ))}
     </div>
