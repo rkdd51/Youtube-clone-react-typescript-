@@ -51,7 +51,7 @@ const Head = () => {
   //   setSearchQuery(e.target.value);
   // };
   return (
-    <div className="grid grid-flow-col p-2 m-2 shadow-lg">
+    <div className="flex p-2 m-2 shadow-lg justify-between">
       <div className="flex col-span-1">
         <img
           onClick={toggleMenuHandler}
@@ -67,10 +67,10 @@ const Head = () => {
           />
         </a>
       </div>
-      <div className="col-span-10 text-center">
+      <div className="col-span-10 w-1/2 relative">
         <div>
           <input
-            className=" w-1/2 border border-gray-400  rounded-l-full p-2"
+            className="w-full border border-gray-400  rounded-l-full p-2 bg-gray-100"
             type="text"
             value={searchQuery}
             onChange={function handleSearch(e) {
@@ -79,30 +79,31 @@ const Head = () => {
             onFocus={() => setShowSuggestions(true)}
             onBlur={() => setShowSuggestions(false)}
           />
-          <button className="border border-gray-400  rounded-r-full py-2 px-3 bg-slate-100 ">
+          <button className="absolute border border-gray-400  rounded-r-full py-2 px-3 bg-slate-100 ">
             🔍
           </button>
         </div>
-        <div
-          className={`absolute  bg-white py-2 px-3 shadow-lg rounded-lg border border-gray-100 w-[45rem]  ${
-            searchQuery === "" ? "invisible" : null
-          }`}
-        >
-          {showSuggestions && (
+        {showSuggestions && (
+          <div
+            className={`absolute bg-gray-100  shadow-lg rounded-lg border border-gray-100 w-full  ${
+              searchQuery === "" ? "invisible" : null
+            }`}
+          >
+            s
             <ul>
               {suggestions?.map((s) => (
                 <li
                   key={s}
-                  className="p-2 m-2 shadow-sm hover:bg-slate-200 border"
+                  className="p-2 m-2 shadow-sm hover:bg-slate-200 border "
                 >
                   {s}
                 </li>
               ))}
             </ul>
-          )}
-        </div>
+          </div>
+        )}
       </div>
-      <div className="text-end col-span-1">
+      <div className="col-span-1">
         <img
           className="w-10 h-10 text-end"
           src="https://e7.pngegg.com/pngimages/178/595/png-clipart-user-profile-computer-icons-login-user-avatars-monochrome-black-thumbnail.png"

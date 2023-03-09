@@ -13,7 +13,7 @@ const ButtonList = () => {
     "Next",
   ];
   return (
-    <div className="flex gap-4 border-rounded-lg">
+    <div className="flex gap-4 border-rounded-lg invisible lg:visible xl:visible 2xl:visible 3xl:visible">
       <Button name={ButtonNames[0]} />
       <Button name={ButtonNames[1]} />
       <Button name={ButtonNames[2]} />
